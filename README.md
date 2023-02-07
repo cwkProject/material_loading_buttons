@@ -1,6 +1,6 @@
 # material_loading_buttons
 
-![pub package](https://img.shields.io/pub/v/material_loading_buttons.svg)](https://pub.dev/packages/material_loading_buttons)
+[![pub package](https://img.shields.io/pub/v/material_loading_buttons.svg)](https://pub.dev/packages/material_loading_buttons)
 
 Simple loadable button implemented based on flutter material design buttons.
 
