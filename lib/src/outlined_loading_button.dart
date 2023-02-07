@@ -132,8 +132,8 @@ class _OutlinedAutoLoadingButtonState
   Widget build(BuildContext context) {
     return OutlinedLoadingButton(
       isLoading: _isLoading,
-      onPressed: _wrapOnPressed,
-      onLongPress: _wrapOnLongPress,
+      onPressed: _wrapOnPressed(),
+      onLongPress: _wrapOnLongPress(),
       onHover: widget.onHover,
       onFocusChange: widget.onFocusChange,
       style: widget.style,

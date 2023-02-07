@@ -174,8 +174,8 @@ class _FilledAutoLoadingButtonState
     if (widget._tonal) {
       return FilledLoadingButton.tonal(
         isLoading: _isLoading,
-        onPressed: _wrapOnPressed,
-        onLongPress: _wrapOnLongPress,
+        onPressed: _wrapOnPressed(),
+        onLongPress: _wrapOnLongPress(),
         onHover: widget.onHover,
         onFocusChange: widget.onFocusChange,
         style: widget.style,
@@ -192,8 +192,8 @@ class _FilledAutoLoadingButtonState
 
     return FilledLoadingButton(
       isLoading: _isLoading,
-      onPressed: _wrapOnPressed,
-      onLongPress: _wrapOnLongPress,
+      onPressed: _wrapOnPressed(),
+      onLongPress: _wrapOnLongPress(),
       onHover: widget.onHover,
       onFocusChange: widget.onFocusChange,
       style: widget.style,

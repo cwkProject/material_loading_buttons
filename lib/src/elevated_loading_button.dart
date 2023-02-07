@@ -132,8 +132,8 @@ class _ElevatedAutoLoadingButtonState
   Widget build(BuildContext context) {
     return ElevatedLoadingButton(
       isLoading: _isLoading,
-      onPressed: _wrapOnPressed,
-      onLongPress: _wrapOnLongPress,
+      onPressed: _wrapOnPressed(),
+      onLongPress: _wrapOnLongPress(),
       onHover: widget.onHover,
       onFocusChange: widget.onFocusChange,
       style: widget.style,
