@@ -1,39 +1,74 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Simple loadable button implemented based on flutter material design buttons.
+
+[Material3 example](./example/screenshot/example.gif)
+
+* ElevatedButton implemented
+* FilledButton implemented
+* Filled tonal button implemented
+* OutlinedButton implemented
+* TextButton implemented
+* The loading status can be controlled
+* Loading icon and label can be defined
+* Implementation of automatic loading status management
+* No additional styles
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```yaml
+material_loading_buttons: ^1.0.0
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+
+// Automatic management status
+ElevatedAutoLoadingButton(
+  onPressed: () async{
+    // load
+    // Exit the loading state when future finished
+  },
+  child: const Text('ElevatedAutoLoadingButton'),
+);
+
+bool _isLoading = false;
+
+// Manual management status
+ElevatedLoadingButton(
+  isLoading: _isLoading,
+  onPressed: () async{
+    setState((){
+      _isLoading = true;
+    });
+    
+    // load
+
+    setState((){
+      _isLoading = false;
+    });
+  },
+  child: const Text('ElevatedLoadingButton'),
+);
+
+// define styles
+ElevatedAutoLoadingButton(
+  style: ElevatedButton.styleFrom(), // original
+
+  // Any widget, Use default CircularProgressIndicator if null
+  loadingIcon: const SizedBox(
+      width: 24,
+      height: 24,
+      child: CircularProgressIndicator(color: Colors.red),
+  ),
+
+  // Any widget, nullable
+  loadingLabel: Text('loading...', style: TextStyle(color: Colors.red)),
+  onPressed: () async{},
+  child: const Text('ElevatedAutoLoadingButton'),
+);
+
 ```
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Other versions button: `FilledLoadingButton`,`FilledAutoLoadingButton`,`OutlinedLoadingButton`,`OutlinedAutoLoadingButton`,`TextLoadingButton`,`TextAutoLoadingButton`.
