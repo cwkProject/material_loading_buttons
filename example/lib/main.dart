@@ -47,7 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ElevatedAutoLoadingButton(
@@ -90,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(width: 16),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ElevatedAutoLoadingButton.icon(

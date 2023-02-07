@@ -12,6 +12,8 @@ part of material_loading_buttons;
 /// 由于逻辑冲突原因，在自动管理按钮中不能使用[FilledLoadingButton.loadingPressable]参数，
 /// 如有需要请自行使用[FilledLoadingButton]。
 ///
+/// [switchDuration]为状态变化时导致的控件大小变化而执行的过渡动画时间，内部使用[AnimatedSize]实现，默认为[kThemeAnimationDuration]。
+///
 /// [style]请参考使用[FilledButton.styleFrom]生成
 class FilledAutoLoadingButton extends StatefulWidget {
   const FilledAutoLoadingButton({
@@ -27,6 +29,7 @@ class FilledAutoLoadingButton extends StatefulWidget {
     this.statesController,
     this.loadingIcon,
     this.loadingLabel,
+    this.switchDuration = kThemeAnimationDuration,
     required this.child,
   }) : _tonal = false;
 
@@ -44,10 +47,12 @@ class FilledAutoLoadingButton extends StatefulWidget {
     this.statesController,
     this.loadingIcon,
     this.loadingLabel,
+    Duration? switchDuration,
     required Widget icon,
     required Widget label,
   })  : autofocus = autofocus ?? false,
         clipBehavior = clipBehavior ?? Clip.none,
+        switchDuration = switchDuration ?? kThemeAnimationDuration,
         child = _ButtonWithIconChild(label: label, icon: icon),
         _tonal = false;
 
@@ -64,6 +69,7 @@ class FilledAutoLoadingButton extends StatefulWidget {
     this.statesController,
     this.loadingIcon,
     this.loadingLabel,
+    this.switchDuration = kThemeAnimationDuration,
     required this.child,
   }) : _tonal = true;
 
@@ -81,10 +87,12 @@ class FilledAutoLoadingButton extends StatefulWidget {
     this.statesController,
     this.loadingIcon,
     this.loadingLabel,
+    Duration? switchDuration,
     required Widget icon,
     required Widget label,
   })  : autofocus = autofocus ?? false,
         clipBehavior = clipBehavior ?? Clip.none,
+        switchDuration = switchDuration ?? kThemeAnimationDuration,
         child = _ButtonWithIconChild(label: label, icon: icon),
         _tonal = true;
 
@@ -154,6 +162,11 @@ class FilledAutoLoadingButton extends StatefulWidget {
   /// 默认为空
   final Widget? loadingLabel;
 
+  /// 状态变化时导致的控件大小变化而执行的过渡动画时间
+  ///
+  /// 内部使用[AnimatedSize]实现，默认为[kThemeAnimationDuration]
+  final Duration switchDuration;
+
   /// 是否为tonal变体
   final bool _tonal;
 
@@ -186,6 +199,7 @@ class _FilledAutoLoadingButtonState
         loadingIcon: widget.loadingIcon,
         loadingLabel: widget.loadingLabel,
         loadingPressable: false,
+        switchDuration: widget.switchDuration,
         child: widget.child,
       );
     }
@@ -204,6 +218,7 @@ class _FilledAutoLoadingButtonState
       loadingIcon: widget.loadingIcon,
       loadingLabel: widget.loadingLabel,
       loadingPressable: false,
+      switchDuration: widget.switchDuration,
       child: widget.child,
     );
   }
@@ -218,6 +233,7 @@ class _FilledAutoLoadingButtonState
 /// 如果[isLoading]值为false则为非加载状态，仅显示[child]，且可响应点击事件。
 ///
 /// [loadingPressable]表示在[isLoading]状态时是否可以响应点击事件，包括[onPressed]和[onLongPress]，默认为false。
+/// [switchDuration]为状态变化时导致的控件大小变化而执行的过渡动画时间，内部使用[AnimatedSize]实现，默认为[kThemeAnimationDuration]。
 ///
 /// [style]请参考使用[FilledButton.styleFrom]生成
 class FilledLoadingButton extends FilledButton {
@@ -236,18 +252,22 @@ class FilledLoadingButton extends FilledButton {
     Widget? loadingIcon,
     Widget? loadingLabel,
     bool loadingPressable = false,
+    Duration switchDuration = kThemeAnimationDuration,
     required Widget? child,
   }) : super(
           onPressed: isLoading && !loadingPressable ? null : onPressed,
           onLongPress: isLoading && !loadingPressable ? null : onLongPress,
-          child: !isLoading
-              ? child
-              : loadingLabel == null
-                  ? loadingIcon ?? const _LoadingChild()
-                  : _ButtonWithIconChild(
-                      icon: loadingIcon ?? const _LoadingChild(),
-                      label: loadingLabel,
-                    ),
+          child: AnimatedSize(
+            duration: switchDuration,
+            child: !isLoading
+                ? child
+                : loadingLabel == null
+                    ? loadingIcon ?? const _LoadingChild()
+                    : _ButtonWithIconChild(
+                        icon: loadingIcon ?? const _LoadingChild(),
+                        label: loadingLabel,
+                      ),
+          ),
         );
 
   /// 参考[FilledButton.icon]
@@ -266,6 +286,7 @@ class FilledLoadingButton extends FilledButton {
     Widget? loadingIcon,
     Widget? loadingLabel,
     bool loadingPressable = false,
+    Duration switchDuration = kThemeAnimationDuration,
     required Widget icon,
     required Widget label,
   }) : super(
@@ -273,14 +294,17 @@ class FilledLoadingButton extends FilledButton {
           clipBehavior: clipBehavior ?? Clip.none,
           onPressed: isLoading && !loadingPressable ? null : onPressed,
           onLongPress: isLoading && !loadingPressable ? null : onLongPress,
-          child: !isLoading
-              ? _ButtonWithIconChild(icon: icon, label: label)
-              : loadingLabel == null
-                  ? loadingIcon ?? const _LoadingChild()
-                  : _ButtonWithIconChild(
-                      icon: loadingIcon ?? const _LoadingChild(),
-                      label: loadingLabel,
-                    ),
+          child: AnimatedSize(
+            duration: switchDuration,
+            child: !isLoading
+                ? _ButtonWithIconChild(icon: icon, label: label)
+                : loadingLabel == null
+                    ? loadingIcon ?? const _LoadingChild()
+                    : _ButtonWithIconChild(
+                        icon: loadingIcon ?? const _LoadingChild(),
+                        label: loadingLabel,
+                      ),
+          ),
         );
 
   /// 参考[FilledButton.tonal]
@@ -299,18 +323,22 @@ class FilledLoadingButton extends FilledButton {
     Widget? loadingIcon,
     Widget? loadingLabel,
     bool loadingPressable = false,
+    Duration switchDuration = kThemeAnimationDuration,
     required Widget? child,
   }) : super.tonal(
           onPressed: isLoading && !loadingPressable ? null : onPressed,
           onLongPress: isLoading && !loadingPressable ? null : onLongPress,
-          child: !isLoading
-              ? child
-              : loadingLabel == null
-                  ? loadingIcon ?? const _LoadingChild()
-                  : _ButtonWithIconChild(
-                      icon: loadingIcon ?? const _LoadingChild(),
-                      label: loadingLabel,
-                    ),
+          child: AnimatedSize(
+            duration: switchDuration,
+            child: !isLoading
+                ? child
+                : loadingLabel == null
+                    ? loadingIcon ?? const _LoadingChild()
+                    : _ButtonWithIconChild(
+                        icon: loadingIcon ?? const _LoadingChild(),
+                        label: loadingLabel,
+                      ),
+          ),
         );
 
   /// 参考[FilledButton.tonalIcon]
@@ -329,6 +357,7 @@ class FilledLoadingButton extends FilledButton {
     Widget? loadingIcon,
     Widget? loadingLabel,
     bool loadingPressable = false,
+    Duration switchDuration = kThemeAnimationDuration,
     required Widget icon,
     required Widget label,
   }) : super.tonal(
@@ -336,19 +365,22 @@ class FilledLoadingButton extends FilledButton {
           clipBehavior: clipBehavior ?? Clip.none,
           onPressed: isLoading && !loadingPressable ? null : onPressed,
           onLongPress: isLoading && !loadingPressable ? null : onLongPress,
-          child: !isLoading
-              ? _ButtonWithIconChild(icon: icon, label: label)
-              : loadingLabel == null
-                  ? loadingIcon ?? const _LoadingChild()
-                  : _ButtonWithIconChild(
-                      icon: loadingIcon ?? const _LoadingChild(),
-                      label: loadingLabel,
-                    ),
+          child: AnimatedSize(
+            duration: switchDuration,
+            child: !isLoading
+                ? _ButtonWithIconChild(icon: icon, label: label)
+                : loadingLabel == null
+                    ? loadingIcon ?? const _LoadingChild()
+                    : _ButtonWithIconChild(
+                        icon: loadingIcon ?? const _LoadingChild(),
+                        label: loadingLabel,
+                      ),
+          ),
         );
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    if (child is! _ButtonWithIconChild) {
+    if ((child as AnimatedSize).child is! _ButtonWithIconChild) {
       return super.defaultStyleOf(context);
     }
 

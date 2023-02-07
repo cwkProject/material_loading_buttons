@@ -12,6 +12,8 @@ part of material_loading_buttons;
 /// 由于逻辑冲突原因，在自动管理按钮中不能使用[ElevatedLoadingButton.loadingPressable]参数，
 /// 如有需要请自行使用[ElevatedLoadingButton]。
 ///
+/// [switchDuration]为状态变化时导致的控件大小变化而执行的过渡动画时间，内部使用[AnimatedSize]实现，默认为[kThemeAnimationDuration]。
+///
 /// [style]请参考使用[ElevatedButton.styleFrom]生成
 class ElevatedAutoLoadingButton extends StatefulWidget {
   const ElevatedAutoLoadingButton({
@@ -27,6 +29,7 @@ class ElevatedAutoLoadingButton extends StatefulWidget {
     this.statesController,
     this.loadingIcon,
     this.loadingLabel,
+    this.switchDuration = kThemeAnimationDuration,
     required this.child,
   });
 
@@ -44,10 +47,12 @@ class ElevatedAutoLoadingButton extends StatefulWidget {
     this.statesController,
     this.loadingIcon,
     this.loadingLabel,
+    Duration? switchDuration,
     required Widget icon,
     required Widget label,
   })  : autofocus = autofocus ?? false,
         clipBehavior = clipBehavior ?? Clip.none,
+        switchDuration = switchDuration ?? kThemeAnimationDuration,
         child = _ButtonWithIconChild(label: label, icon: icon);
 
   /// 按钮点击事件
@@ -116,6 +121,11 @@ class ElevatedAutoLoadingButton extends StatefulWidget {
   /// 默认为空
   final Widget? loadingLabel;
 
+  /// 状态变化时导致的控件大小变化而执行的过渡动画时间
+  ///
+  /// 内部使用[AnimatedSize]实现，默认为[kThemeAnimationDuration]
+  final Duration switchDuration;
+
   @override
   State createState() => _ElevatedAutoLoadingButtonState();
 }
@@ -144,6 +154,7 @@ class _ElevatedAutoLoadingButtonState
       loadingIcon: widget.loadingIcon,
       loadingLabel: widget.loadingLabel,
       loadingPressable: false,
+      switchDuration: widget.switchDuration,
       child: widget.child,
     );
   }
@@ -158,6 +169,7 @@ class _ElevatedAutoLoadingButtonState
 /// 如果[isLoading]值为false则为非加载状态，仅显示[child]，且可响应点击事件。
 ///
 /// [loadingPressable]表示在[isLoading]状态时是否可以响应点击事件，包括[onPressed]和[onLongPress]，默认为false。
+/// [switchDuration]为状态变化时导致的控件大小变化而执行的过渡动画时间，内部使用[AnimatedSize]实现，默认为[kThemeAnimationDuration]。
 ///
 /// [style]请参考使用[ElevatedButton.styleFrom]生成
 class ElevatedLoadingButton extends ElevatedButton {
@@ -174,20 +186,24 @@ class ElevatedLoadingButton extends ElevatedButton {
     super.clipBehavior = Clip.none,
     super.statesController,
     bool loadingPressable = false,
+    Duration switchDuration = kThemeAnimationDuration,
     Widget? loadingIcon,
     Widget? loadingLabel,
     required Widget? child,
   }) : super(
           onPressed: isLoading && !loadingPressable ? null : onPressed,
           onLongPress: isLoading && !loadingPressable ? null : onLongPress,
-          child: !isLoading
-              ? child
-              : loadingLabel == null
-                  ? loadingIcon ?? const _LoadingChild()
-                  : _ButtonWithIconChild(
-                      icon: loadingIcon ?? const _LoadingChild(),
-                      label: loadingLabel,
-                    ),
+          child: AnimatedSize(
+            duration: switchDuration,
+            child: !isLoading
+                ? child
+                : loadingLabel == null
+                    ? loadingIcon ?? const _LoadingChild()
+                    : _ButtonWithIconChild(
+                        icon: loadingIcon ?? const _LoadingChild(),
+                        label: loadingLabel,
+                      ),
+          ),
         );
 
   /// 参考[ElevatedButton.icon]
@@ -208,6 +224,7 @@ class ElevatedLoadingButton extends ElevatedButton {
     Widget? loadingIcon,
     Widget? loadingLabel,
     bool loadingPressable = false,
+    Duration switchDuration = kThemeAnimationDuration,
     required Widget icon,
     required Widget label,
   }) : super(
@@ -215,19 +232,22 @@ class ElevatedLoadingButton extends ElevatedButton {
           clipBehavior: clipBehavior ?? Clip.none,
           onPressed: isLoading && !loadingPressable ? null : onPressed,
           onLongPress: isLoading && !loadingPressable ? null : onLongPress,
-          child: !isLoading
-              ? _ButtonWithIconChild(icon: icon, label: label)
-              : loadingLabel == null
-                  ? loadingIcon ?? const _LoadingChild()
-                  : _ButtonWithIconChild(
-                      icon: loadingIcon ?? const _LoadingChild(),
-                      label: loadingLabel,
-                    ),
+          child: AnimatedSize(
+            duration: switchDuration,
+            child: !isLoading
+                ? _ButtonWithIconChild(icon: icon, label: label)
+                : loadingLabel == null
+                    ? loadingIcon ?? const _LoadingChild()
+                    : _ButtonWithIconChild(
+                        icon: loadingIcon ?? const _LoadingChild(),
+                        label: loadingLabel,
+                      ),
+          ),
         );
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    if (child is! _ButtonWithIconChild) {
+    if ((child as AnimatedSize).child is! _ButtonWithIconChild) {
       return super.defaultStyleOf(context);
     }
 

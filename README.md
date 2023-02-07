@@ -20,7 +20,7 @@ Material3 design demo
 ## Getting started
 
 ```yaml
-material_loading_buttons: ^1.0.0
+material_loading_buttons: ^1.1.0
 ```
 
 ## Usage
