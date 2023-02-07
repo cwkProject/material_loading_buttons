@@ -2,7 +2,8 @@
 
 Simple loadable button implemented based on flutter material design buttons.
 
-![Material3 example](/example/screenshot/example.gif)
+![Material3 example](/example/screenshot/example.gif "Material3 style")
+
 Material3 style
 
 * ElevatedButton implemented
