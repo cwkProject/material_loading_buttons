@@ -251,11 +251,14 @@ class TextLoadingButton extends TextButton {
       return super.defaultStyleOf(context);
     }
 
+    final bool useMaterial3 = Theme.of(context).useMaterial3;
     final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      const EdgeInsets.all(8),
+      useMaterial3
+          ? const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 8)
+          : const EdgeInsets.all(8),
       const EdgeInsets.symmetric(horizontal: 4),
       const EdgeInsets.symmetric(horizontal: 4),
-      MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
+      MediaQuery.textScalerOf(context).textScaleFactor,
     );
     return super.defaultStyleOf(context).copyWith(
           padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(scaledPadding),

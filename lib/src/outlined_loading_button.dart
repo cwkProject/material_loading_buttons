@@ -244,4 +244,23 @@ class OutlinedLoadingButton extends OutlinedButton {
                       ),
           ),
         );
+
+  @override
+  ButtonStyle defaultStyleOf(BuildContext context) {
+    final bool useMaterial3 = Theme.of(context).useMaterial3;
+    if (!useMaterial3 ||
+        (child as AnimatedSize).child is! _ButtonWithIconChild) {
+      return super.defaultStyleOf(context);
+    }
+
+    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
+      const EdgeInsetsDirectional.fromSTEB(16, 0, 24, 0),
+      const EdgeInsetsDirectional.fromSTEB(8, 0, 12, 0),
+      const EdgeInsetsDirectional.fromSTEB(4, 0, 6, 0),
+      MediaQuery.textScalerOf(context).textScaleFactor,
+    );
+    return super.defaultStyleOf(context).copyWith(
+          padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(scaledPadding),
+        );
+  }
 }

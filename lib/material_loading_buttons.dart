@@ -12,3 +12,4 @@ part 'src/elevated_loading_button.dart';
 part 'src/filled_loading_button.dart';
 part 'src/outlined_loading_button.dart';
 part 'src/text_loading_button.dart';
+part 'src/icon_loading_button.dart';
