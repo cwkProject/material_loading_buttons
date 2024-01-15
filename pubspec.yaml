@@ -1,6 +1,6 @@
 name: material_loading_buttons
 description: Simple loadable button implemented based on flutter material design buttons.
-version: 1.2.0
+version: 1.2.1
 homepage: https://github.com/cwkProject/material_loading_buttons
 
 environment:

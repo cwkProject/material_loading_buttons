@@ -399,12 +399,12 @@ class IconAutoLoadingButton extends StatefulWidget {
 
   /// 当处于[isSelected]并加载状态并且[selectedIcon]不为空时显示的加载图标
   ///
-  /// 为空则使用[loadingIcon]，如果[loadingIcon]也为空，则使用默认实现[CircularProgressIndicator]
+  /// 为空则使用[loadingIcon]，如果[loadingIcon]也为空，则使用默认实现[_LoadingChild]
   final Widget? selectedLoadingIcon;
 
   /// 当处于加载状态时显示的加载图标
   ///
-  /// 默认实现为[CircularProgressIndicator]
+  /// 默认实现为[_LoadingChild]
   final Widget? loadingIcon;
 
   /// The icon to display inside the button.
@@ -439,12 +439,7 @@ class _IconAutoLoadingButtonState
 
     if (_isLoading) {
       icon = widget.loadingIcon ??
-          Builder(
-            builder: (context) => CircularProgressIndicator(
-              strokeWidth: 2,
-              color: IconTheme.of(context).color,
-            ),
-          );
+          Builder(builder: (context) => const _LoadingChild());
 
       if (selectedIcon != null) {
         selectedIcon = widget.selectedLoadingIcon ?? icon;
